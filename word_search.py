@@ -9,7 +9,8 @@ class Point:
 
 class WordSearch:
     def __init__(self, puzzle):
-        pass
+        self.puzzle = puzzle
+        self.moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]
 
     def search(self, word):
         pass
