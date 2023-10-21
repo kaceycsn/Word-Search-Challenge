@@ -22,7 +22,7 @@ class WordSearch:
             print("=====FINDNEXTCHAR=====")
             next_point = Point(point.x + direction[0], point.y + direction[1])
 
-            if 0 <= next_point.x < cols and 0 <= next_point.x < rows and self.puzzle[next_point.y][next_point.x] == word[0]:
+            if 0 <= next_point.x < cols and 0 <= next_point.y < rows and self.puzzle[next_point.y][next_point.x] == word[0]:
                 remaining_word = word[1:]
                 print("MATCHED: ", self.puzzle[next_point.y][next_point.x])
                 print("REMAINING WORD: ", remaining_word)
@@ -81,11 +81,10 @@ class WordSearch:
                                     print("HERE")
                                     sol = findNextChar(next_point, remainder_word, direction)
                                     if sol:
-                                        # ans.append([grid_pointer, sol])
                                         ans.append([(grid_pointer.x, grid_pointer.y), (sol.x, sol.y)])
                                         return ans
                                     else:
-                                        break
+                                        continue
         print(ans)
         return ans
     
