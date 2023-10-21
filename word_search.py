@@ -14,20 +14,20 @@ class WordSearch:
         self.rows = len(puzzle)
         self.cols = len(puzzle[0])
 
-    def isWithinBounds(self, point):
+    def is_within_bounds(self, point):
         return 0 <= point.x < self.cols and 0 <= point.y < self.rows
 
-    def findNextChar(self, point, word, direction):
+    def find_next_char(self, point, word, direction):
         next_point = Point(point.x + direction[0], point.y + direction[1])
 
-        if self.isWithinBounds(next_point) and self.puzzle[next_point.y][next_point.x] == word[0]:
+        if self.is_within_bounds(next_point) and self.puzzle[next_point.y][next_point.x] == word[0]:
             remaining_word = word[1:]
 
             if not remaining_word:
                 return next_point
             
             else:
-                return self.findNextChar(next_point, remaining_word, direction)
+                return self.find_next_char(next_point, remaining_word, direction)
 
         else:
             return False
@@ -49,7 +49,7 @@ class WordSearch:
                         for direction in self.moves:
                             next_point = Point(grid_pointer.x + direction[0], grid_pointer.y + direction[1])
              
-                            if not self.isWithinBounds(next_point):
+                            if not self.is_within_bounds(next_point):
                                 continue
                             
                             elif self.puzzle[next_point.y][next_point.x] == remaining_word[0]:
@@ -59,7 +59,7 @@ class WordSearch:
                                     ans = (grid_pointer, next_point)
 
                                 else:
-                                    sol = self.findNextChar(next_point, remainder_word, direction)
+                                    sol = self.find_next_char(next_point, remainder_word, direction)
                                     if sol:
                                         ans = (grid_pointer, sol)
                                         return ans
