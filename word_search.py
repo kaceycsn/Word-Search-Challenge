@@ -25,9 +25,24 @@ class WordSearch:
     def __init__(self, puzzle):
         """Initialize a WordSearch object with a puzzle grid.
 
+        This constructor sets up a WordSearch object with the provided puzzle grid.
+
         Keyword arguments:
             puzzle (List[str]): A list of strings representing the puzzle grid.
+                Each string in the list represents a row of characters.
+
+        Raises:
+            ValueError: If the puzzle is not valid (e.g., empty or rows of different lengths).
+
+        Attributes:
+            puzzle (List[str]): The puzzle grid represented as a list of strings.
+            moves (List[Tuple[int, int]]): A list of valid moves for searching words.
+            rows (int): The number of rows in the puzzle grid.
+            cols (int): The number of columns in the puzzle grid.
         """
+        if not puzzle or not all(len(row) == len(puzzle[0]) for row in puzzle):
+            raise ValueError("Puzzle is not valid. All rows should have the same length.")
+
         self.puzzle = puzzle
         self.moves = [(1, 0), (0, 1), (-1, 0), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]
         self.rows = len(puzzle)
@@ -135,5 +150,3 @@ class WordSearch:
                                 else:
                                     continue
         return None
-    
-    
