@@ -16,11 +16,19 @@ class WordSearch:
 
     def is_within_bounds(self, point):
         return 0 <= point.x < self.cols and 0 <= point.y < self.rows
+    
+    def is_char_at_position(self, point, character):
+        return self.puzzle[point.y][point.x] == character
+    
+    def get_next_point(self, current_point, direction):
+        next_x = current_point.x + direction[0]
+        next_y = current_point.y + direction[1]
+        return Point(next_x, next_y)
 
     def find_next_char(self, point, word, direction):
-        next_point = Point(point.x + direction[0], point.y + direction[1])
+        next_point = self.get_next_point(point, direction)
 
-        if self.is_within_bounds(next_point) and self.puzzle[next_point.y][next_point.x] == word[0]:
+        if self.is_within_bounds(next_point) and self.is_char_at_position(next_point,word[0]):
             remaining_word = word[1:]
 
             if not remaining_word:
@@ -33,38 +41,35 @@ class WordSearch:
             return False
     
     def search(self, word):
-        ans = None
-
         for i in range(self.rows):
             for j in range(self.cols):
-                grid_pointer = Point(j, i)
+                start_point = Point(j, i)
 
-                if self.puzzle[grid_pointer.y][grid_pointer.x] == word[0]:
+                if self.is_char_at_position(start_point, word[0]):
                     remaining_word = word[1:]
 
                     if not remaining_word:
-                        ans = (grid_pointer, grid_pointer) 
+                        return (start_point, start_point) 
 
-                    else:
-                        for direction in self.moves:
-                            next_point = Point(grid_pointer.x + direction[0], grid_pointer.y + direction[1])
-             
-                            if not self.is_within_bounds(next_point):
-                                continue
-                            
-                            elif self.puzzle[next_point.y][next_point.x] == remaining_word[0]:
-                                remainder_word = remaining_word[1:]
-                         
-                                if not remainder_word:
-                                    ans = (grid_pointer, next_point)
+                    for direction in self.moves:
+                        next_point =self.get_next_point(start_point, direction)
 
+                        if not self.is_within_bounds(next_point):
+                            continue
+                        
+                        elif self.is_char_at_position(next_point, remaining_word[0]):
+                            remainder_word = remaining_word[1:]
+                        
+                            if not remainder_word:
+                                return (start_point, next_point)
+
+                            else:
+                                sol = self.find_next_char(next_point, remainder_word, direction)
+                                if sol:
+                                    return (start_point, sol)
+                                    
                                 else:
-                                    sol = self.find_next_char(next_point, remainder_word, direction)
-                                    if sol:
-                                        ans = (grid_pointer, sol)
-                                        return ans
-                                    else:
-                                        continue
-        return ans
+                                    continue
+        return None
     
     
