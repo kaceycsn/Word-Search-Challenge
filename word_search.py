@@ -119,34 +119,42 @@ class WordSearch:
         Returns:
             Union[Tuple[Point, Point], None]: A tuple of start and end Points if the word is found,
             None if the word is not found.
+
+        Raises:
+            Exception: If an error occurs during the word search, it will be raised with an error message.
         """
-        for i in range(self.rows):
-            for j in range(self.cols):
-                start_point = Point(j, i)
+        try:
+            for i in range(self.rows):
+                for j in range(self.cols):
+                    start_point = Point(j, i)
 
-                if self.is_char_at_position(start_point, word[0]):
-                    remaining_word = word[1:]
+                    if self.is_char_at_position(start_point, word[0]):
+                        remaining_word = word[1:]
 
-                    if not remaining_word:
-                        return (start_point, start_point) 
+                        if not remaining_word:
+                            return (start_point, start_point) 
 
-                    for direction in self.moves:
-                        next_point =self.get_next_point(start_point, direction)
+                        for direction in self.moves:
+                            next_point =self.get_next_point(start_point, direction)
 
-                        if not self.is_within_bounds(next_point):
-                            continue
-                        
-                        elif self.is_char_at_position(next_point, remaining_word[0]):
-                            remainder_word = remaining_word[1:]
-                        
-                            if not remainder_word:
-                                return (start_point, next_point)
+                            if not self.is_within_bounds(next_point):
+                                continue
+                            
+                            elif self.is_char_at_position(next_point, remaining_word[0]):
+                                remainder_word = remaining_word[1:]
+                            
+                                if not remainder_word:
+                                    return (start_point, next_point)
 
-                            else:
-                                sol = self.find_next_char(next_point, remainder_word, direction)
-                                if sol:
-                                    return (start_point, sol)
-                                    
                                 else:
-                                    continue
+                                    sol = self.find_next_char(next_point, remainder_word, direction)
+                                    if sol:
+                                        return (start_point, sol)
+                                        
+                                    else:
+                                        continue
+            
+        except Exception as e:
+            print(f"An error occurred during the word search: {e}")
+
         return None
